@@ -3,7 +3,7 @@ component "libxml2" do |pkg, settings, platform|
   pkg.md5sum "ae249165c173b1ff386ee8ad676815f5"
   pkg.url "http://xmlsoft.org/sources/#{pkg.get_name}-#{pkg.get_version}.tar.gz"
 
-  if platform.name =~ /^debian-9/
+  if settings[:use_pl_build_tools] == "no"
     # These platforms use the OS vendor provided toolchain and build tools
     pkg.build_requires "gcc"
     pkg.build_requires "make"

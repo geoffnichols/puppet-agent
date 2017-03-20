@@ -5,7 +5,7 @@ component "libxslt" do |pkg, settings, platform|
 
   pkg.build_requires "libxml2"
 
-  if platform.name =~ /^debian-9/
+  if settings[:use_pl_build_tools] == "no"
     # These platforms use the OS vendor provided toolchain and build tools
     pkg.build_requires "gcc"
     pkg.build_requires "make"

@@ -19,7 +19,11 @@ component "ruby-selinux" do |pkg, settings, platform|
   pkg.build_requires "libsepol-devel"
   pkg.build_requires "libselinux-devel"
 
-  cc = "/opt/pl-build-tools/bin/gcc"
+  if settings[:use_pl_build_tools] == "no"
+    cc = "/usr/bin/gcc"
+  else 
+    cc = "/opt/pl-build-tools/bin/gcc"
+  end
   system_include = "-I/usr/include"
   ruby = "#{settings[:bindir]}/ruby -rrbconfig"
   if platform.is_cross_compiled_linux?

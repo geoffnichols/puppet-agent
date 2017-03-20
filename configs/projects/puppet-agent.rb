@@ -95,7 +95,13 @@ project "puppet-agent" do |proj|
   proj.setting(:gem_home, File.join(proj.libdir, "ruby", "gems", "2.3.0"))
   proj.setting(:ruby_vendordir, File.join(proj.libdir, "ruby", "vendor_ruby"))
 
-  # Cross-compiled Linux platforms
+  if ENV['USE_PL_BUILD_TOOLS'] == "no"
+    proj.setting(:use_pl_build_tools, "no")
+  else
+    proj.setting(:use_pl_build_tools, "yes")
+  end
+
+# Cross-compiled Linux platforms
   platform_triple = "powerpc-linux-gnu" if platform.is_huaweios?
   platform_triple = "powerpc64le-unknown-linux-gnu" if platform.architecture == "ppc64le"
   platform_triple = "s390x-linux-gnu" if platform.architecture == "s390x"
@@ -170,7 +176,7 @@ project "puppet-agent" do |proj|
 
   # Define default CFLAGS and LDFLAGS for most platforms, and then
   # tweak or adjust them as needed.
-  if platform.name =~ /^debian-9/
+ if :use_pl_build_tools == "no"
     # These platforms use the OS vendor provided toolchain and build tools
     proj.setting(:cppflags, "-I#{proj.includedir}")
     proj.setting(:cflags, "#{proj.cppflags}")
@@ -262,7 +268,7 @@ project "puppet-agent" do |proj|
 
   # Require runtime for all platforms except those built with OS
   # vendor provided toolchain and build tools
-  proj.component "runtime" unless platform.name =~ /^debian-9/
+  proj.component "runtime" if :use_pl_build_tools == "yes"
 
   # Needed to avoid using readline on solaris and aix
   if platform.is_solaris? || platform.is_aix?

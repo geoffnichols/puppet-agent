@@ -1,13 +1,12 @@
 component "leatherman" do |pkg, settings, platform|
   pkg.load_from_json('configs/components/leatherman.json')
 
-  if platform.name =~ /^debian-9/
+  if settings[:use_pl_build_tools] == "no"
     # These platforms use the OS vendor provided toolchain and build tools
     pkg.build_requires "gcc"
     pkg.build_requires "cmake"
     pkg.build_requires "libboost-all-dev" if platform.is_deb?
-
-    pkg.add_source "file://resources/files/debian-native-toolchain.cmake.txt" if platform.is_deb?
+    pkg.add_source "file://resources/files/linux-native-toolchain.cmake.txt" if platform.is_linux?
   elsif platform.is_osx?
     pkg.build_requires "cmake"
     pkg.build_requires "boost"
@@ -44,16 +43,17 @@ component "leatherman" do |pkg, settings, platform|
   make = platform[:make]
   # Require runtime for all platforms except those built with OS
   # vendor provided toolchain and build tools
-  pkg.build_requires "runtime" unless platform.name =~ /^debian-9/
+  pkg.build_requires "runtime" unless settings[:use_pl_build_tools] == "no"
   pkg.build_requires "ruby-#{settings[:ruby_version]}"
 
   ruby = "#{settings[:host_ruby]} -rrbconfig"
 
   boost_static = "-DBOOST_STATIC=ON"
 
-  if platform.name =~ /^debian-9/
+  if settings[:use_pl_build_tools] == "no"
     # These platforms use the OS vendor provided toolchain and build tools
-    toolchain = "-DCMAKE_TOOLCHAIN_FILE=$(workdir)/debian-native-toolchain.cmake.txt" if platform.is_deb?
+    #toolchain = "-DCMAKE_TOOLCHAIN_FILE=$(workdir)/linux-native-toolchain.cmake.txt" if platform.is_linux?
+    toolchain = " " if platform.is_linux?
     boost_static = "-DBOOST_STATIC=OFF"
     cmake = "cmake"
   elsif platform.is_osx?
@@ -84,8 +84,8 @@ component "leatherman" do |pkg, settings, platform|
     cmake = "C:/ProgramData/chocolatey/bin/cmake.exe -G \"MinGW Makefiles\""
     toolchain = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/pl-build-toolchain.cmake"
   else
-    toolchain = "-DCMAKE_TOOLCHAIN_FILE=/opt/pl-build-tools/pl-build-toolchain.cmake"
-    cmake = "/opt/pl-build-tools/bin/cmake"
+#    toolchain = "-DCMAKE_TOOLCHAIN_FILE=/opt/pl-build-tools/pl-build-toolchain.cmake"
+#    cmake = "/opt/pl-build-tools/bin/cmake"
 
     if platform.is_cisco_wrlinux?
       special_flags = "-DLEATHERMAN_USE_LOCALES=OFF"

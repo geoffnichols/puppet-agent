@@ -7,9 +7,9 @@ component "cpp-hocon" do |pkg, settings, platform|
 
   boost_static = "-DBOOST_STATIC=ON"
 
-  if platform.name =~ /^debian-9/
+  if settings[:use_pl_build_tools] == "no"
     # These platforms use the OS vendor provided toolchain and build tools
-    toolchain = "-DCMAKE_TOOLCHAIN_FILE=$(workdir)/debian-native-toolchain.cmake.txt" if platform.is_deb?
+    toolchain = "-DCMAKE_TOOLCHAIN_FILE=$(workdir)/linux-native-toolchain.cmake.txt" if platform.is_linux?
     boost_static = "-DBOOST_STATIC=OFF"
     cmake = "cmake"
   elsif platform.is_osx?

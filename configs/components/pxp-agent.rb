@@ -18,7 +18,7 @@ component "pxp-agent" do |pkg, settings, platform|
 
   special_flags = " -DCMAKE_INSTALL_PREFIX=#{settings[:prefix]} "
 
-  if platform.name =~ /^debian-9/
+ if settings[:use_pl_build_tools] == "no"
     # These platforms use the OS vendor provided toolchain and build tools
     pkg.build_requires "gcc"
     pkg.build_requires "cmake"

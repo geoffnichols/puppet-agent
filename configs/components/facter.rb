@@ -19,7 +19,7 @@ component "facter" do |pkg, settings, platform|
   pkg.build_requires 'leatherman'
   # Require runtime for all platforms except those built with OS
   # vendor provided toolchain and build tools
-  pkg.build_requires 'runtime' unless platform.name =~ /^debian-9/
+  pkg.build_requires 'runtime' unless settings[:use_pl_build_tools] == "no"
   pkg.build_requires 'cpp-hocon'
 
   if platform.is_linux? && !platform.is_huaweios?
@@ -37,12 +37,13 @@ component "facter" do |pkg, settings, platform|
     pkg.environment "PATH" => "#{settings[:bindir]}:$$PATH"
   end
 
-  if platform.name =~ /^debian-9/
+  if settings[:use_pl_build_tools] == "no"
     # These platforms use the OS vendor provided toolchain and build tools
     pkg.build_requires "gcc"
     pkg.build_requires "cmake"
     pkg.build_requires "libboost-all-dev" if platform.is_deb?
     pkg.build_requires "libyaml-cpp-dev" if platform.is_deb?
+    pkg.build_requires "yaml-cpp-devel" if platform.is_fedora?
   elsif platform.is_osx?
     # OSX uses clang and system openssl. cmake comes from brew.
     pkg.build_requires "cmake"
@@ -147,10 +148,10 @@ component "facter" do |pkg, settings, platform|
   yamlcpp_static = "-DYAMLCPP_STATIC=ON"
   special_flags = " -DCMAKE_INSTALL_PREFIX=#{settings[:prefix]} "
 
-  if platform.name =~ /^debian-9/
+  if settings[:use_pl_build_tools] == "no"
     # These platforms use the OS vendor provided toolchain and build tools
     cmake = "cmake"
-    toolchain = "-DCMAKE_TOOLCHAIN_FILE=$(workdir)/debian-native-toolchain.cmake.txt" if platform.is_deb?
+    toolchain = "-DCMAKE_TOOLCHAIN_FILE=$(workdir)/linux-native-toolchain.cmake.txt" if platform.is_linux?
     boost_static = "-DBOOST_STATIC=OFF"
     yamlcpp_static = "-DYAMLCPP_STATIC=OFF"
   elsif platform.is_osx?
@@ -237,7 +238,7 @@ component "facter" do |pkg, settings, platform|
   end
 
   tests = []
-  unless platform.is_windows? || platform.is_cross_compiled_linux? || platform.architecture == 'sparc' || platform.name =~ /^debian-9/
+  unless platform.is_windows? || platform.is_cross_compiled_linux? || platform.architecture == 'sparc' || settings[:use_pl_build_tools] == "no"
     # Check that we're not linking against system libstdc++ and libgcc_s
     tests = [
       "#{ldd} lib/libfacter.so",

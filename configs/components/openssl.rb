@@ -5,7 +5,7 @@ component "openssl" do |pkg, settings, platform|
 
   pkg.replaces 'pe-openssl'
 
-  if platform.name =~ /^debian-9/
+  if settings[:use_pl_build_tools] == "no"
     # These platforms use the OS vendor provided toolchain and build tools
     pkg.build_requires 'binutils'
     pkg.build_requires 'gcc'

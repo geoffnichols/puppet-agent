@@ -16,13 +16,13 @@ component "cpp-pcp-client" do |pkg, settings, platform|
 
   boost_static = "-DBOOST_STATIC=ON"
 
-  if platform.name =~ /^debian-9/
+ if settings[:use_pl_build_tools] == "no"
     # These platforms use the OS vendor provided toolchain and build tools
     pkg.build_requires "gcc"
     pkg.build_requires "cmake"
     pkg.build_requires "libboost-all-dev" if platform.is_deb?
     cmake = "cmake"
-    toolchain = "-DCMAKE_TOOLCHAIN_FILE=$(workdir)/debian-native-toolchain.cmake.txt" if platform.is_deb?
+    toolchain = "-DCMAKE_TOOLCHAIN_FILE=$(workdir)/linux-native-toolchain.cmake.txt" if platform.is_linux?
     boost_static = "-DBOOST_STATIC=OFF"
   elsif platform.is_aix?
     pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-gcc-5.2.0-1.aix#{platform.os_version}.ppc.rpm"
@@ -80,7 +80,7 @@ component "cpp-pcp-client" do |pkg, settings, platform|
   end
 
   pkg.build do
-    ["#{make} -j$(shell expr $(shell #{platform[:num_cores]}) + 1)"]
+    ["#{make}"]
   end
 
   pkg.install do
