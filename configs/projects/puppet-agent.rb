@@ -107,7 +107,11 @@ project "puppet-agent" do |proj|
     proj.component "shellpath"
   end
 
-  proj.component "runtime"
+  if platform.name =~ /debian-9-armhf/
+    proj.component "toolchain"
+  else
+    proj.component "runtime"
+  end
 
   # Windows doesn't need these wrappers, only unix platforms
   unless platform.is_windows?
