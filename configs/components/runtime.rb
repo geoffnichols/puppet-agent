@@ -15,8 +15,8 @@ component "runtime" do |pkg, settings, platform|
     pkg.build_requires "pl-gcc-#{platform.architecture}"
     pkg.build_requires "pl-binutils-#{platform.architecture}"
   elsif platform.is_aix?
-    pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-gcc-5.2.0-11.aix#{platform.os_version}.ppc.rpm"
-    libdir = "/opt/pl-build-tools/lib/gcc/powerpc-ibm-aix#{platform.os_version}.0.0/5.2.0/"
+    #
+    libdir = "/opt/freeware/lib"
   elsif platform.is_windows?
     pkg.build_requires "pl-gdbm-#{platform.architecture}"
     pkg.build_requires "pl-iconv-#{platform.architecture}"

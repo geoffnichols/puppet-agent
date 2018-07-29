@@ -5,6 +5,10 @@ component "libwhereami" do |pkg, settings, platform|
 
   make = platform[:make]
 
+  #if platform.is_aix?
+  #  pkg.environment "LIBPATH" => "/opt/freeware/lib:$(LIBPATH)"
+  #end
+
   # cmake on OSX is provided by brew
   # a toolchain is not currently required for OSX since we're building with clang.
   if platform.is_macos?

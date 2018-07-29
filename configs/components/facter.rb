@@ -100,6 +100,10 @@ component "facter" do |pkg, settings, platform|
 
   special_flags = " -DCMAKE_INSTALL_PREFIX=#{settings[:prefix]} "
 
+  #if platform.is_aix?
+  #  pkg.environment "LIBPATH" => "/opt/freeware/lib:$(LIBPATH)"
+  #end
+
   # cmake on OSX is provided by brew
   # a toolchain is not currently required for OSX since we're building with clang.
   if platform.is_macos?

@@ -107,13 +107,13 @@ def install_dependencies(agent)
     'zypper' => ['gcc', 'sqlite3-devel'],
     'opt/csw/bin/pkgutil' => ['sqlite3', 'libsqlite3_dev'],
     'rpm' => [
-      'http://pl-build-tools.delivery.puppetlabs.net/aix/6.1/ppc/pl-gcc-5.2.0-11.aix6.1.ppc.rpm',
-      'http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/pkg-config-0.19-6.aix5.2.ppc.rpm',
-      'http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/info-4.6-1.aix5.1.ppc.rpm',
-      'http://www.oss4aix.org/download/RPMS/readline/readline-7.0-3.aix5.1.ppc.rpm',
-      'http://www.oss4aix.org/download/RPMS/readline/readline-devel-7.0-3.aix5.1.ppc.rpm',
-      'http://www.oss4aix.org/download/RPMS/sqlite/sqlite-3.20.0-1.aix5.1.ppc.rpm',
-      'http://www.oss4aix.org/download/RPMS/sqlite/sqlite-devel-3.20.0-1.aix5.1.ppc.rpm'
+      'https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/RPMS/ppc-6.1/gcc/gcc-6.3.0-1.aix6.1.ppc.rpm',
+      'https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/RPMS/ppc/pkg-config/pkg-config-0.29.2-1.aix6.1.ppc.rpm',
+      'https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/RPMS/ppc/texinfo/info-6.4-1.aix6.1.ppc.rpm',
+      'https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/RPMS/ppc/readline/readline-7.0-5.aix6.1.ppc.rpm',
+      'https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/RPMS/ppc/readline/readline-devel-7.0-5.aix6.1.ppc.rpm',
+      'https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/RPMS/ppc/sqlite/sqlite-3.23.0-1.aix6.1.ppc.rpm',
+      'https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/RPMS/ppc/sqlite/sqlite-devel-3.23.0-1.aix6.1.ppc.rpm'
     ]
   }
 

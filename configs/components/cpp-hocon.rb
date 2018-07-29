@@ -36,6 +36,10 @@ component "cpp-hocon" do |pkg, settings, platform|
     end
   end
 
+  #if platform.is_aix?
+  #  pkg.environment "LIBPATH", "/opt/freeware/lib:$(LIBPATH)"
+  #end
+
   # Until we build our own gettext packages, disable using locales.
   # gettext 0.17 is required to compile .mo files with msgctxt.
   pkg.configure do

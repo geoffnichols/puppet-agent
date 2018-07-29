@@ -88,6 +88,11 @@ project "puppet-agent" do |proj|
     proj.bill_of_materials File.join(proj.datadir, "doc")
   end
 
+  # On AIX, system mktemp needs extra arguments
+  if platform.is_aix?
+    platform.mktemp = "/opt/freeware/bin/mktemp --directory --tmpdir=/var/tmp"
+  end
+
   # Set package version, for use by Facter in creating the AIO_AGENT_VERSION fact.
   proj.setting(:package_version, proj.get_version)
 
