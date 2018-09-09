@@ -8,7 +8,7 @@ def package_installer(agent)
   # need to manually set up the package installer for these platforms.
   case agent['platform']
   when /aix/
-    lambda { |package| on(agent, "rpm -Uvh #{package}") }
+    lambda { |package| on(agent, "yum install -y #{package}") }
   when /solaris-10/
     lambda { |package| on(agent, "opt/csw/bin/pkgutil --config=/var/tmp/vanagon-pkgutil.conf  -y -i #{package}") }
   else
@@ -106,15 +106,7 @@ def install_dependencies(agent)
     'yum' => ['gcc', 'make', 'sqlite-devel'],
     'zypper' => ['gcc', 'sqlite3-devel'],
     'opt/csw/bin/pkgutil' => ['sqlite3', 'libsqlite3_dev'],
-    'rpm' => [
-      'https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/RPMS/ppc-6.1/gcc/gcc-6.3.0-1.aix6.1.ppc.rpm',
-      'https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/RPMS/ppc/pkg-config/pkg-config-0.29.2-1.aix6.1.ppc.rpm',
-      'https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/RPMS/ppc/texinfo/info-6.4-1.aix6.1.ppc.rpm',
-      'https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/RPMS/ppc/readline/readline-7.0-5.aix6.1.ppc.rpm',
-      'https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/RPMS/ppc/readline/readline-devel-7.0-5.aix6.1.ppc.rpm',
-      'https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/RPMS/ppc/sqlite/sqlite-3.23.0-1.aix6.1.ppc.rpm',
-      'https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/RPMS/ppc/sqlite/sqlite-devel-3.23.0-1.aix6.1.ppc.rpm'
-    ]
+    'rpm' => ['gcc', 'pkg-config', 'info', 'readline', 'readline-devel', 'sqlite', 'sqlite-devel']
   }
 
   provider = dependencies.keys.find do |_provider|
